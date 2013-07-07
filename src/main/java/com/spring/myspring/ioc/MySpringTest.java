@@ -11,6 +11,8 @@ public class MySpringTest {
     public static void main(String[] args) {
         MyApplicationContext context = new MyApplicationContext();
         Cat cat = (Cat) context.getBean("cat");
-        cat.getHobby().act();
+        for (Hobby hobby:cat.getHobbies()){
+            hobby.act();
+        }
     }
 }

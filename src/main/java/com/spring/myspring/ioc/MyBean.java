@@ -3,6 +3,7 @@ package com.spring.myspring.ioc;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,7 +17,7 @@ public class MyBean {
 
     private String id;
     private String type;
-    private Map<String,Object> properties = new HashMap<String,Object>();
+    private Map<String,List> properties = new HashMap<String,List>();
 
 
     public void setId(String id) {
@@ -35,11 +36,11 @@ public class MyBean {
         return type;
     }
 
-    public Map<String, Object> getProperties() {
+    public Map<String, List> getProperties() {
         return properties;
     }
 
-    public void setProperties(Map<String, Object> properties) {
+    public void setProperties(Map<String, List> properties) {
         this.properties = properties;
     }
 }

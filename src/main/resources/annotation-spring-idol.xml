@@ -9,7 +9,7 @@
     <!--<bean id="saxophone" class="com.spring.annotation.springidol.Saxophone"/>-->
     <!--<bean id="duke" class="com.spring.annotation.springidol.PoeticJuggler"/>-->
     <!--<bean id="kenny" class="com.spring.annotation.springidol.Instrumentalist">-->
-        <!--<property name="song" value="Jingle Bells"/>-->
+        <!--<property type="song" value="Jingle Bells"/>-->
     <!--</bean>-->
     <context:component-scan base-package="com.spring.annotation.springidol">
         <!--<context:include-filter type="assignable" expression="com.spring.annotation.springidol.Instrument"/>-->

@@ -8,13 +8,13 @@ package com.spring.myspring.ioc;
  * To change this template use File | Settings | File Templates.
  */
 public class Hobby {
-    private String name;
+    private String type;
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void act(){
-        System.out.println("I love my hobby:" + name);
+        System.out.println("I love my hobby:" + type);
     }
 }

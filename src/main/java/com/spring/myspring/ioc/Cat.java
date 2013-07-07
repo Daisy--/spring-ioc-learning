@@ -1,5 +1,7 @@
 package com.spring.myspring.ioc;
 
+import java.util.ArrayList;
+
 /**
  * Created with IntelliJ IDEA.
  * User: twer
@@ -8,13 +10,13 @@ package com.spring.myspring.ioc;
  * To change this template use File | Settings | File Templates.
  */
 public class Cat {
-    private Hobby hobby;
+    private ArrayList<Hobby> hobbies;
 
-    public void setHobby(Hobby hobby) {
-        this.hobby = hobby;
+    public void setHobbies(ArrayList<Hobby> hobbies) {
+        this.hobbies = hobbies;
     }
 
-    public Hobby getHobby() {
-        return hobby;
+    public ArrayList<Hobby> getHobbies() {
+        return hobbies;
     }
 }

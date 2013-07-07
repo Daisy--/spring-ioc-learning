@@ -2,8 +2,7 @@ package com.spring.myspring.ioc;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,6 +13,11 @@ import java.util.Map;
  */
 public class MyApplicationContext {
 
+    public static final String BEAN_ID_HOBBY_SLEEP = "sleeping";
+    public static final String BEAN_ID_HOBBY_EAT = "eating";
+    public static final String BEAN_ID_CAT = "cat";
+    public static final String PROPERTY_TYPE_IN_HOBBY = "type";
+    public static final String PROPERTY_HOBBIES_IN_CAT = "hobbies";
     private final Map<String, Object> beansMap;
 
     public MyApplicationContext() {
@@ -22,36 +26,46 @@ public class MyApplicationContext {
     }
 
     private void initBeans() {
-        beansMap.put("hobby",new Object());
-        beansMap.put("cat",new Object());
+        beansMap.put(BEAN_ID_HOBBY_SLEEP, new Object());
+        beansMap.put(BEAN_ID_HOBBY_EAT, new Object());
+        beansMap.put(BEAN_ID_CAT, new Object());
 
-        initBean("hobby", "com.spring.myspring.ioc.Hobby", collectProperties(new HashMap<String, String>() {
+        initBean(BEAN_ID_HOBBY_SLEEP, "com.spring.myspring.ioc.Hobby", collectProperties(new HashMap<String, ArrayList<String>>() {
             {
-                put("name", "value=sleeping");
+                put(PROPERTY_TYPE_IN_HOBBY, new ArrayList<String>(Arrays.asList("value=sleeping")));
             }
         }));
-        initBean("cat", "com.spring.myspring.ioc.Cat", collectProperties(new HashMap<String, String>() {
+        initBean(BEAN_ID_HOBBY_EAT, "com.spring.myspring.ioc.Hobby", collectProperties(new HashMap<String, ArrayList<String>>() {
             {
-                put("hobby", "ref=hobby");
+                put(PROPERTY_TYPE_IN_HOBBY, new ArrayList<String>(Arrays.asList("value=eating")));
+            }
+        }));
+        initBean(BEAN_ID_CAT, "com.spring.myspring.ioc.Cat", collectProperties(new HashMap<String, ArrayList<String>>() {
+            {
+                put(PROPERTY_HOBBIES_IN_CAT, new ArrayList<String>(Arrays.asList("ref=sleeping", "ref=eating")));
             }
         }));
     }
 
-    private Map<String, Object> collectProperties(Map<String, String> attributes) {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
+    private Map<String, List> collectProperties(HashMap<String, ArrayList<String>> attributes) {
+        Map<String, List> resultMap = new HashMap<String, List>();
         for (String fieldName : attributes.keySet()) {
-            Object value = returnValue(attributes.get(fieldName));
+            ArrayList value = (ArrayList) returnValue(attributes.get(fieldName));
             resultMap.put(fieldName, value);
         }
         return resultMap;
     }
 
-    private Object returnValue(String valueString) {
-        String[] valueSet = valueString.split("=");
-        return valueSet[0].equals("ref") ? lookingForBean(valueSet[1]) : valueSet[1];
+    private List returnValue(ArrayList<String> valueList) {
+        List values = new ArrayList();
+        for (String everyValue : valueList) {
+            String[] valueSet = everyValue.split("=");
+            values.add(valueSet[0].equals("ref") ? lookingForBean(valueSet[1]) : valueSet[1]);
+        }
+        return values;
     }
 
-    private void initBean(String beanId, String beanType, Map<String, Object> beanProperties) {
+    private void initBean(String beanId, String beanType, Map<String, List> beanProperties) {
         MyBean myBean = new MyBean();
 
         myBean.setId(beanId);
@@ -67,26 +81,26 @@ public class MyApplicationContext {
         return beansMap.get(beanId);
     }
 
-    private void setProperties(Object obj, Map<String, Object> properties) {
+    private void setProperties(Object obj, Map<String, List> properties) {
         for (String field : properties.keySet()) {
             setProperty(obj, field, properties.get(field));
         }
     }
 
-    private void setProperty(Object obj, String field, Object value) {
+    private void setProperty(Object obj, String field, List values) {
         Method[] methods = obj.getClass().getMethods();
         for (Method method : methods) {
             if (method.getName().equals(returnSetterName(field))) {
-                if (isSpecifiedSetter(value, method)) {
-                    setFieldValue(obj, method, value);
+                if (isSpecifiedSetter(values, method)) {
+                    setFieldValue(obj, method, values);
                 }
             }
         }
     }
 
-    private void setFieldValue(Object obj, Method method, Object value) {
+    private void setFieldValue(Object obj, Method method, List value) {
         try {
-            method.invoke(obj, value);
+            method.invoke(obj, value.size() == 1 ? value.get(0) : value);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
@@ -95,7 +109,7 @@ public class MyApplicationContext {
     }
 
     private boolean isSpecifiedSetter(Object value, Method method) {
-        return method.getParameterTypes().length == 1 ;
+        return method.getParameterTypes().length == 1;
     }
 
     private String returnSetterName(String field) {
