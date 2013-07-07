@@ -19,6 +19,7 @@ public class MyApplicationContext {
     public static final String PROPERTY_TYPE_IN_HOBBY = "type";
     public static final String PROPERTY_HOBBIES_IN_CAT = "hobbies";
     private final Map<String, Object> beansMap;
+    private List<MyBean> beans = new ArrayList<MyBean>();
 
     public MyApplicationContext() {
         beansMap = new HashMap<String, Object>();
@@ -26,25 +27,43 @@ public class MyApplicationContext {
     }
 
     private void initBeans() {
-        beansMap.put(BEAN_ID_HOBBY_SLEEP, new Object());
-        beansMap.put(BEAN_ID_HOBBY_EAT, new Object());
-        beansMap.put(BEAN_ID_CAT, new Object());
+        createBeans();
 
-        initBean(BEAN_ID_HOBBY_SLEEP, "com.spring.myspring.ioc.Hobby", collectProperties(new HashMap<String, ArrayList<String>>() {
-            {
-                put(PROPERTY_TYPE_IN_HOBBY, new ArrayList<String>(Arrays.asList("value=sleeping")));
-            }
-        }));
-        initBean(BEAN_ID_HOBBY_EAT, "com.spring.myspring.ioc.Hobby", collectProperties(new HashMap<String, ArrayList<String>>() {
-            {
-                put(PROPERTY_TYPE_IN_HOBBY, new ArrayList<String>(Arrays.asList("value=eating")));
-            }
-        }));
-        initBean(BEAN_ID_CAT, "com.spring.myspring.ioc.Cat", collectProperties(new HashMap<String, ArrayList<String>>() {
+        for (MyBean bean : beans) {
+                initBean(bean);
+        }
+    }
+
+    private void createBeans() {
+        beans.add(createMyBean(BEAN_ID_CAT, "com.spring.myspring.ioc.Cat", new HashMap<String, ArrayList<String>>() {
             {
                 put(PROPERTY_HOBBIES_IN_CAT, new ArrayList<String>(Arrays.asList("ref=sleeping", "ref=eating")));
             }
         }));
+        beans.add(createMyBean(BEAN_ID_HOBBY_EAT, "com.spring.myspring.ioc.Hobby", new HashMap<String, ArrayList<String>>() {
+            {
+                put(PROPERTY_TYPE_IN_HOBBY, new ArrayList<String>(Arrays.asList("value=eating")));
+            }
+        }));
+        beans.add(createMyBean(BEAN_ID_HOBBY_SLEEP, "com.spring.myspring.ioc.Hobby", new HashMap<String, ArrayList<String>>() {
+            {
+                put(PROPERTY_TYPE_IN_HOBBY, new ArrayList<String>(Arrays.asList("value=sleeping")));
+            }
+        }));
+    }
+
+    private MyBean createMyBean(String beanId, String beanType, HashMap<String, ArrayList<String>> beanProperties) {
+        MyBean bean = new MyBean();
+        bean.setId(beanId);
+        bean.setType(beanType);
+        bean.setProperties(beanProperties);
+        return bean;
+    }
+
+    private void initBean(MyBean bean) {
+        Object instanceOfMyBean = newInstance(bean.getType());
+        setProperties(instanceOfMyBean, collectProperties(bean.getProperties()));
+        beansMap.put(bean.getId(), instanceOfMyBean);
     }
 
     private Map<String, List> collectProperties(HashMap<String, ArrayList<String>> attributes) {
@@ -65,20 +84,20 @@ public class MyApplicationContext {
         return values;
     }
 
-    private void initBean(String beanId, String beanType, Map<String, List> beanProperties) {
-        MyBean myBean = new MyBean();
-
-        myBean.setId(beanId);
-        myBean.setType(beanType);
-        myBean.setProperties(beanProperties);
-
-        Object instanceOfMyBean = newInstance(myBean.getType());
-        setProperties(instanceOfMyBean, myBean.getProperties());
-        beansMap.put(myBean.getId(), instanceOfMyBean);
+    private Object lookingForBean(String beanId) {
+        if (beansMap.get(beanId) == null) {
+            initBean(getBeanFromBeans(beanId));
+        }
+        return beansMap.get(beanId);
     }
 
-    private Object lookingForBean(String beanId) {
-        return beansMap.get(beanId);
+    private MyBean getBeanFromBeans(String beanId) {
+        for (MyBean bean : beans) {
+            if (bean.getId().equals(beanId)) {
+                return bean;
+            }
+        }
+        return null;
     }
 
     private void setProperties(Object obj, Map<String, List> properties) {
@@ -91,7 +110,7 @@ public class MyApplicationContext {
         Method[] methods = obj.getClass().getMethods();
         for (Method method : methods) {
             if (method.getName().equals(returnSetterName(field))) {
-                if (isSpecifiedSetter(values, method)) {
+                if (isSpecifiedSetter(method)) {
                     setFieldValue(obj, method, values);
                 }
             }
@@ -108,7 +127,7 @@ public class MyApplicationContext {
         }
     }
 
-    private boolean isSpecifiedSetter(Object value, Method method) {
+    private boolean isSpecifiedSetter(Method method) {
         return method.getParameterTypes().length == 1;
     }
 

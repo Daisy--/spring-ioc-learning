@@ -2,6 +2,7 @@ package com.spring.myspring.ioc;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,7 @@ public class MyBean {
 
     private String id;
     private String type;
-    private Map<String,List> properties = new HashMap<String,List>();
+    private HashMap<String, ArrayList<String>> properties = new HashMap<String, ArrayList<String>>();
 
 
     public void setId(String id) {
@@ -36,11 +37,11 @@ public class MyBean {
         return type;
     }
 
-    public Map<String, List> getProperties() {
+    public HashMap<String, ArrayList<String>> getProperties() {
         return properties;
     }
 
-    public void setProperties(Map<String, List> properties) {
+    public void setProperties(HashMap<String,ArrayList<String>> properties) {
         this.properties = properties;
     }
 }
