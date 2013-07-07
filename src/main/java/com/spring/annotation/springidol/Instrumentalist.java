@@ -2,6 +2,8 @@ package com.spring.annotation.springidol;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,11 +12,22 @@ import org.springframework.beans.factory.annotation.Qualifier;
  * Time: 3:59 PM
  * To change this template use File | Settings | File Templates.
  */
+//@Component("kenny")
 public class Instrumentalist implements Performer {
+//    @Value("Jingle Bells")
     private String song;
     @Autowired
-    @Qualifier("piano")
+    @Qualifier("saxophone")
     private Instrument instrument;
+
+    public Instrumentalist(String song, Instrument instrument) {
+        this.song = song;
+        this.instrument = instrument;
+    }
+
+    public Instrumentalist(String song) {
+        this.song = song;
+    }
 
     @Override
     public void perform() {

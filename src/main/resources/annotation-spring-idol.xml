@@ -3,12 +3,15 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-    <context:annotation-config/>
-    <bean id="duke" class="com.spring.annotation.springidol.PoeticJuggler"/>
-    <bean id="sonnet29" class="com.spring.annotation.springidol.Sonnet29"/>
-    <bean id="piano" class="com.spring.annotation.springidol.Piano"/>
-    <bean id="saxophone" class="com.spring.annotation.springidol.Saxophone"/>
-    <bean id="kenny" class="com.spring.annotation.springidol.Instrumentalist">
-        <property name="song" value="Jingle Bells"/>
-    </bean>
+    <!--<context:annotation-config/>-->
+    <!--<bean id="sonnet29" class="com.spring.annotation.springidol.Sonnet29"/>-->
+    <!--<bean id="piano" class="com.spring.annotation.springidol.Piano"/>-->
+    <!--<bean id="saxophone" class="com.spring.annotation.springidol.Saxophone"/>-->
+    <!--<bean id="duke" class="com.spring.annotation.springidol.PoeticJuggler"/>-->
+    <!--<bean id="kenny" class="com.spring.annotation.springidol.Instrumentalist">-->
+        <!--<property name="song" value="Jingle Bells"/>-->
+    <!--</bean>-->
+    <context:component-scan base-package="com.spring.annotation.springidol">
+        <!--<context:include-filter type="assignable" expression="com.spring.annotation.springidol.Instrument"/>-->
+    </context:component-scan>
 </beans>

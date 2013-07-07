@@ -1,5 +1,7 @@
 package com.spring.annotation.springidol;
 
+import org.springframework.stereotype.Component;
+
 /**
  * Created with IntelliJ IDEA.
  * User: twer

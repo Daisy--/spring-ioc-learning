@@ -1,6 +1,7 @@
 package com.spring.annotation.springidol;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Time: 3:43 PM
  * To change this template use File | Settings | File Templates.
  */
+//@Component("duke")
 public class PoeticJuggler extends Juggler {
     @Autowired
     private Poem poem;
