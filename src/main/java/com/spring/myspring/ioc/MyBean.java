@@ -20,13 +20,10 @@ public class MyBean {
     private String type;
     private HashMap<String, ArrayList<String>> properties = new HashMap<String, ArrayList<String>>();
 
-
-    public void setId(String id) {
+    public MyBean(String id, String type, HashMap<String, ArrayList<String>> properties) {
         this.id = id;
-    }
-
-    public void setType(String type) {
         this.type = type;
+        this.properties = properties;
     }
 
     public String getId() {
@@ -41,8 +38,5 @@ public class MyBean {
         return properties;
     }
 
-    public void setProperties(HashMap<String,ArrayList<String>> properties) {
-        this.properties = properties;
-    }
 }
 

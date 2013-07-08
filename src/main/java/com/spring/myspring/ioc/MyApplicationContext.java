@@ -12,52 +12,19 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class MyApplicationContext {
-
-    public static final String BEAN_ID_HOBBY_SLEEP = "sleeping";
-    public static final String BEAN_ID_HOBBY_EAT = "eating";
-    public static final String BEAN_ID_CAT = "cat";
-    public static final String PROPERTY_TYPE_IN_HOBBY = "type";
-    public static final String PROPERTY_HOBBIES_IN_CAT = "hobbies";
     private final Map<String, Object> beansMap;
     private List<MyBean> beans = new ArrayList<MyBean>();
 
-    public MyApplicationContext() {
+    public MyApplicationContext(ArrayList<MyBean> beans) {
+        this.beans = beans;
         beansMap = new HashMap<String, Object>();
         initBeans();
     }
 
     private void initBeans() {
-        createBeans();
-
         for (MyBean bean : beans) {
-                initBean(bean);
+            initBean(bean);
         }
-    }
-
-    private void createBeans() {
-        beans.add(createMyBean(BEAN_ID_CAT, "com.spring.myspring.ioc.Cat", new HashMap<String, ArrayList<String>>() {
-            {
-                put(PROPERTY_HOBBIES_IN_CAT, new ArrayList<String>(Arrays.asList("ref=sleeping", "ref=eating")));
-            }
-        }));
-        beans.add(createMyBean(BEAN_ID_HOBBY_EAT, "com.spring.myspring.ioc.Hobby", new HashMap<String, ArrayList<String>>() {
-            {
-                put(PROPERTY_TYPE_IN_HOBBY, new ArrayList<String>(Arrays.asList("value=eating")));
-            }
-        }));
-        beans.add(createMyBean(BEAN_ID_HOBBY_SLEEP, "com.spring.myspring.ioc.Hobby", new HashMap<String, ArrayList<String>>() {
-            {
-                put(PROPERTY_TYPE_IN_HOBBY, new ArrayList<String>(Arrays.asList("value=sleeping")));
-            }
-        }));
-    }
-
-    private MyBean createMyBean(String beanId, String beanType, HashMap<String, ArrayList<String>> beanProperties) {
-        MyBean bean = new MyBean();
-        bean.setId(beanId);
-        bean.setType(beanType);
-        bean.setProperties(beanProperties);
-        return bean;
     }
 
     private void initBean(MyBean bean) {

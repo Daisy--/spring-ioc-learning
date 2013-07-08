@@ -1,4 +1,4 @@
-package com.spring.myspring.ioc;
+package com.spring.annimal;
 
 /**
  * Created with IntelliJ IDEA.
