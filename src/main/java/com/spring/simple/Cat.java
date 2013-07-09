@@ -1,4 +1,4 @@
-package com.spring.annimal;
+package com.spring.simple;
 
 import java.util.ArrayList;
 

@@ -1,7 +1,7 @@
 package com.spring.myspring.ioc;
 
-import com.spring.annimal.Cat;
-import com.spring.annimal.Hobby;
+import com.spring.simple.Cat;
+import com.spring.simple.Hobby;
 import com.spring.springidol.Instrumentalist;
 import org.junit.Test;
 
@@ -52,17 +52,17 @@ public class MyApplicationContextTest {
     }
 
     private ArrayList<MyBean> loadConfigFile() {
-        MyBean bean1 = new MyBean(BEAN_ID_CAT, "com.spring.annimal.Cat", new HashMap<String, ArrayList<String>>() {
+        MyBean bean1 = new MyBean(BEAN_ID_CAT, "com.spring.simple.Cat", new HashMap<String, ArrayList<String>>() {
             {
                 put(PROPERTY_HOBBIES_IN_CAT, new ArrayList<String>(Arrays.asList("ref=sleeping", "ref=eating")));
             }
         });
-        MyBean bean2 = new MyBean(BEAN_ID_HOBBY_EAT, "com.spring.annimal.Hobby", new HashMap<String, ArrayList<String>>() {
+        MyBean bean2 = new MyBean(BEAN_ID_HOBBY_EAT, "com.spring.simple.Hobby", new HashMap<String, ArrayList<String>>() {
             {
                 put(PROPERTY_TYPE_IN_HOBBY, new ArrayList<String>(Arrays.asList("value=eating")));
             }
         });
-        MyBean bean3 = new MyBean(BEAN_ID_HOBBY_SLEEP, "com.spring.annimal.Hobby", new HashMap<String, ArrayList<String>>() {
+        MyBean bean3 = new MyBean(BEAN_ID_HOBBY_SLEEP, "com.spring.simple.Hobby", new HashMap<String, ArrayList<String>>() {
             {
                 put(PROPERTY_TYPE_IN_HOBBY, new ArrayList<String>(Arrays.asList("value=sleeping")));
             }

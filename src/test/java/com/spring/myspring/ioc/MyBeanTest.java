@@ -30,14 +30,14 @@ public class MyBeanTest {
                 put(PROPERTY_TYPE_IN_HOBBY, new ArrayList<String>(Arrays.asList("value=eating")));
             }
         };
-        bean = new MyBean(BEAN_ID_HOBBY_EAT, "com.spring.annimal.Hobby", eatProperties);
+        bean = new MyBean(BEAN_ID_HOBBY_EAT, "com.spring.simple.Hobby", eatProperties);
     }
 
     @Test
     public void should_get_properties_of_bean() throws Exception {
         // then
         assertThat(bean.getId(), is(BEAN_ID_HOBBY_EAT));
-        assertThat(bean.getType(),is("com.spring.annimal.Hobby"));
+        assertThat(bean.getType(),is("com.spring.simple.Hobby"));
         assertThat(bean.getProperties(),is(eatProperties));
     }
 }
